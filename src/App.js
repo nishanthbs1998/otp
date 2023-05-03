@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-
 function App() {
   const [value, setValue] = useState("");
   const [dummyData, setDummyData] = useState();
@@ -8,9 +7,8 @@ function App() {
   const [recentId, setRecentId] = useState("");
   const [timer, setTimer] = useState(0);
   const [startTimer, setStartTimer] = useState(false);
-  const [btnD, setBtnD] = useState(true);
+  const [resetBtnDisable, setResetBtnDisable] = useState(true);
   const [isMessage, setIsMessage] = useState(false);
-
   const [showOtp, setShowOtp] = useState(false);
   const intv = useRef(null);
   useEffect(() => {
@@ -30,9 +28,9 @@ function App() {
 
   useEffect(() => {
     if (timer === 30) {
-      setBtnD(false);
+      setResetBtnDisable(false);
     } else {
-      setBtnD(true);
+      setResetBtnDisable(true);
     }
   }, [timer]);
 
@@ -60,27 +58,28 @@ function App() {
     setRecentId(value);
     setValue("");
     fetchData();
-    
-
-    
   };
 
   return (
-    <div className="flex flex-col gap-10 m-10 justify-center items-center ">
+    <div className="flex flex-col gap-10 m-10 items-center ">
       <div className="flex flex-col gap-2">
-      <p className="font-semibold text-lg">Enter your Email</p>
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
-        className="border-2 border-gray-300 rounded-md p-1"
-          value={value}
-          type="email"
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <button type="submit" className="px-4 py-1 bg-orange-500 rounded-md text-white">Generate OTP</button>
-      </form>
-
+        <p className="font-semibold text-lg">Enter your Email</p>
+        <form onSubmit={handleSubmit} className="flex gap-2">
+          <input
+            className="border-2 border-gray-300 rounded-md p-1"
+            value={value}
+            type="email"
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="px-4 py-1 bg-orange-500 rounded-md text-white"
+          >
+            Generate OTP
+          </button>
+        </form>
       </div>
-      
+
       {isLoading && <p className="text-md">Please wait....</p>}
       {isMessage && (
         <p>
@@ -88,11 +87,21 @@ function App() {
         </p>
       )}
       {showOtp && (
-        <div className="flex flex-col gap-2 justify-center items-center">
+        <div className="flex flex-col gap-2 items-center">
           <p className="font-medium">Enter OTP</p>
-          <input className="border-2 border-gray-300 rounded-md p-1"/>
+          <input className="border-2 border-gray-300 rounded-md p-1" />
           <p>Resend OTP in {timer} sec(s)</p>
-          <button disabled={btnD} className={btnD?"py-1 px-4 rounded-md text-white bg-gray-300":"py-1 px-4 rounded-md text-white bg-gray-500"}>Resend</button>
+          <button
+            onClick={() => fetchData()}
+            disabled={resetBtnDisable}
+            className={
+              resetBtnDisable
+                ? "py-1 px-4 rounded-md text-white bg-gray-300"
+                : "py-1 px-4 rounded-md text-white bg-gray-500"
+            }
+          >
+            Resend
+          </button>
         </div>
       )}
     </div>
