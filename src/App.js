@@ -20,7 +20,7 @@ function App() {
         }, 1000);
       }
     }
-    console.log("c");
+    
     return () => {
       clearInterval(intv.current);
     };
