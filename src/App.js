@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-
+// import { useContext} from "react";
+// import { userContext } from "./userContext";
+import { useContextCustom } from "./userContext";
 function App() {
+// const userValue=useContext(userContext)
+  const userCustomVal=useContextCustom()
+  //console.log(userValue)
   const [value, setValue] = useState("");
   const [dummyData, setDummyData] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +17,7 @@ function App() {
   const [showOtp, setShowOtp] = useState(false);
   const intv = useRef(null);
   useEffect(() => {
+    //console.log("User name", userValue)
     if (startTimer === false) return;
     else {
       if (timer < 30) {
@@ -24,7 +30,7 @@ function App() {
     return () => {
       clearInterval(intv.current);
     };
-  }, [startTimer, timer]);
+  },[startTimer,timer]);
 
   useEffect(() => {
     if (timer === 30) {
@@ -62,6 +68,12 @@ function App() {
 
   return (
     <div className="flex flex-col gap-10 m-10 items-center ">
+      {userCustomVal.name}
+      {" "}
+      {userCustomVal.age}
+      {/* {userValue.name}
+      {" "}
+      {userValue.age} */}
       <div className="flex flex-col gap-2">
         <p className="font-semibold text-lg">Enter your Email</p>
         <form onSubmit={handleSubmit} className="flex gap-2">
@@ -95,7 +107,7 @@ function App() {
             onClick={() => fetchData()}
             disabled={resetBtnDisable}
             className={
-              resetBtnDisable
+              timer<30
                 ? "py-1 px-4 rounded-md text-white bg-gray-300"
                 : "py-1 px-4 rounded-md text-white bg-gray-500"
             }
